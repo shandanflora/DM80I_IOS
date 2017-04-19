@@ -10,6 +10,8 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +37,13 @@ public class NewScheduleActivity {
     @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAButton[2]")
     private MobileElement btnDelete = null;
     @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAPicker[1]/UIAPickerWheel[1]")
-    private MobileElement picker = null;
+    private MobileElement pickerH = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAPicker[1]/UIAPickerWheel[2]")
+    private MobileElement pickerM = null;
+    @FindBy(xpath = " //UIAApplication[1]/UIAWindow[1]/UIAAlert[1]/UIAScrollView[1]/UIAStaticText[2]")
+    private MobileElement overPromptContent = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAAlert[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAButton[1]")
+    private MobileElement overPromptSure = null;
 
 
     private NewScheduleActivity(){
@@ -181,9 +189,27 @@ public class NewScheduleActivity {
                 brepeatValue[4] && brepeatValue[5] && brepeatValue[6];
     }
 
+    private List<String> getCurTimeSchedule(){
+        List<MobileElement> list = driver.findElementsByClassName("UIAPickerWheel");
+        List<String> listTime = new ArrayList<String>();
+        if (list.size() != 0){
+            for(MobileElement editText: list){
+                String str = editText.getText();
+                listTime.add(str.substring(0, str.indexOf(" ")).trim());
+            }
+        }
+        System.out.println(listTime.get(0));
+        System.out.println(listTime.get(1));
+        return listTime;
+    }
+
+    public void setStartTimeNight(){
+        Common.getInstance().setStartTimeNight(driver, pickerH, pickerM, getCurTimeSchedule(), 4);
+    }
+
     public void setStartTime(){
-        Point point = picker.getLocation();
-        Dimension dimension = picker.getSize();
+        Point point = pickerH.getLocation();
+        Dimension dimension = pickerH.getSize();
         int iRectX = point.getX();
         int iRectY = point.getY();
         int iWidth = dimension.getWidth();
@@ -194,6 +220,24 @@ public class NewScheduleActivity {
 
         driver.swipe(point.x, point.y ,
                 point.x, point.y - iHeight/4, 100);
+    }
+
+    public boolean repeatTimeSchedule(Map<String, String> tranMap){
+        String strLanguage = tranMap.get("language");
+        boolean bpromptContent = overPromptContent.getText().trim().equalsIgnoreCase(tranMap.get("random_deebot_appointment_limit_time"));
+        if(!bpromptContent){
+            TranslateErrorReport.getInstance().insetNewLine(
+                    strLanguage, "TimeSchedule", overPromptContent.getText(),
+                    tranMap.get("random_deebot_appointment_limit_time"), "fail");
+        }
+        boolean bpromptSure = overPromptSure.getText().trim().equalsIgnoreCase(tranMap.get("random_deebot_btn_known"));
+        if(!bpromptSure){
+            TranslateErrorReport.getInstance().insetNewLine(
+                    strLanguage, "TimeSchedule", overPromptSure.getText(),
+                    tranMap.get("random_deebot_btn_known"), "fail");
+        }
+        overPromptSure.click();
+        return bpromptContent && bpromptSure;
     }
 
     public void clickConfirmAdd(){

@@ -31,8 +31,6 @@ public class UnibotCleanActivity {
     private MobileElement textViewStatusValue = null;
     @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[4]")
     private MobileElement textViewStatus = null;
-    /*@FindBy(id = "com.ecovacs.ecosphere.intl:id/deebot_battery_statues")
-    private AndroidElement textViewBatteryValue = null;*/
     @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAImage[2]")
     private MobileElement imageBattery = null;
     @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAStaticText[5]")
@@ -242,8 +240,35 @@ public class UnibotCleanActivity {
                     strLanguage, "UnibotClean", textViewStatusValue.getText(),
                     tranMap.get("random_deebot_state_go_charging"), "fail");
         }
+        //check stand by
+        btnCharge.click();
+        logger.info(textViewStatusValue.getText());
+        boolean btextViewStatusValue3 = textViewStatusValue.getText().equalsIgnoreCase(tranMap.get("random_deebot_state_standby"));
+        if (!btextViewStatusValue3) {
+            TranslateErrorReport.getInstance().insetNewLine(
+                    strLanguage, "UnibotClean", textViewStatusValue.getText(),
+                    tranMap.get("random_deebot_state_standby"), "fail");
+        }
+        btnCharge.click();
+        logger.info(textViewStatusValue.getText());
         showStatusCharge();
-        return btextViewStatusValue && btextViewStatusValue1 && btextViewStatusValue2;
+        return btextViewStatusValue && btextViewStatusValue1 && btextViewStatusValue2 &&
+                btextViewStatusValue3;
+    }
+
+    public void clickAuto7(){
+        for (int i = 0; i < 7; i++){
+            //auto
+            btnAuto.click();
+            Common.getInstance().waitForSecond(1000);
+            //standby
+            btnAuto.click();
+            logger.info("i--" + i);
+        }
+        //charge
+        btnCharge.click();
+        logger.info(textViewStatusValue.getText());
+        showText(textViewStatusValue.getText());
     }
 
     private boolean checkStatus(Map<String, String> tranMap){

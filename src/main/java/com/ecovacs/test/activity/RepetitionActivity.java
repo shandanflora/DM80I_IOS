@@ -50,7 +50,7 @@ public class RepetitionActivity {
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
-    public void clickSun(){
+    private void clickSun(){
         sunday.click();
     }
 

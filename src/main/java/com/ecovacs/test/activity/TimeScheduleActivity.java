@@ -100,19 +100,20 @@ public class TimeScheduleActivity {
         btnAddTime.click();
     }
 
-    public boolean translateAddNewSchedule(Map<String, String> tranMap, boolean bNever){
+    public boolean translateAddNewSchedule(Map<String, String> tranMap, int iIndex){
+        String[] weekDays = {"random_deebot_sunday", "random_deebot_monday",
+                "random_deebot_Tuesday", "random_deebot_Wednesday",
+                "random_deebot_Thursday", "random_deebot_Friday",
+                "random_deebot_Saturday", "random_deebot_weekends",
+                "random_deebot_workdays", "random_deebot_everyday",
+                "random_deebot_never"};
         String strLanguage = tranMap.get("language");
-        String strDate;
-        if (bNever){
-            strDate = tranMap.get("random_deebot_never").trim();
-        }else {
-            strDate = tranMap.get("random_deebot_sunday").trim();
-        }
-        boolean btextDate = textDate.getText().trim().equalsIgnoreCase(strDate);
+        Common.getInstance().showActivity(textDate);
+        boolean btextDate = textDate.getText().trim().equalsIgnoreCase(weekDays[iIndex]);
         if (!btextDate){
             TranslateErrorReport.getInstance().insetNewLine(
                     strLanguage, "TimeSchedule", textDate.getText().trim(),
-                    strDate, "fail");
+                    tranMap.get(weekDays[iIndex]), "fail");
         }
         return btextDate;
     }
