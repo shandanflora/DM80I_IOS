@@ -1,23 +1,23 @@
 package com.ecovacs.test.common;
 
-import org.apache.poi.common.usermodel.HyperlinkType;
-import org.apache.poi.hssf.util.HSSFColor;
+//import org.apache.poi.common.usermodel.HyperlinkType;
+//import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
+/*import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFHyperlink;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFSheet;*/
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.List;
+//import java.util.List;
 
 /**
  * Created by ecosqa on 16/12/17.
  * excel opreation
  */
-public class ExcelManage {
+class ExcelManage {
 
     private static ExcelManage excelManage = null;
     private static Logger logger = LoggerFactory.getLogger(ExcelManage.class);
@@ -39,7 +39,7 @@ public class ExcelManage {
      * @return if strSubPath is null,return current path
      *         else return current path and sub directory
      */
-    public String getCurPath(String strSubPath){
+    String getCurPath(String strSubPath){
         File directory = new File("");//set current path
         String strPath = "";
         try{
@@ -88,7 +88,7 @@ public class ExcelManage {
 
     }
 
-    public void saveExcel(Workbook wb, String strExcel){
+    void saveExcel(Workbook wb, String strExcel){
         File folder = new File(getCurPath("/report/"));
         if(!folder.exists() && !folder.isDirectory()){
             if(!folder.mkdir()){
@@ -105,7 +105,7 @@ public class ExcelManage {
             e.printStackTrace();
         }
     }
-
+/*
     public void writeColServer(){
         try {
             List<String> listOthers = JsonParse.getJsonParse().readDataFromJson("serverCountry.json", "others");
@@ -199,5 +199,5 @@ public class ExcelManage {
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
 }

@@ -233,7 +233,7 @@ class HandleIntl {
         return true;
     }*/
 
-    public void changeLanguage(String strLanguage){
+    void changeLanguage(String strLanguage){
         //return deebot clean
         //SettingActivity.getInstance().clickBack();
         //return main
@@ -316,7 +316,7 @@ class HandleIntl {
     }
 
     boolean translateMain(){
-        login("Japan", PropertyData.getProperty("hotmail_email"), PropertyData.getProperty("login_pass"));
+        //login("Japan", PropertyData.getProperty("hotmail_email"), PropertyData.getProperty("login_pass"));
         //
         MainActivity.getInstance().showDeviceList();
         //
@@ -408,9 +408,9 @@ class HandleIntl {
 
     boolean translateMore(){
         MainActivity.getInstance().clickMore();
-        boolean bTranlate = MoreActivity.getInstance().translate(languageMap);
+        return MoreActivity.getInstance().translate(languageMap);
         //MoreActivity.getInstance().clickBack();
-        return bTranlate;
+        //return bTranlate;
     }
 
     boolean translateAbout(){
@@ -468,12 +468,15 @@ class HandleIntl {
         MainActivity.getInstance().clickDM80i();
         UnibotCleanActivity.getInstance().showActivity();
         UnibotCleanActivity.getInstance().showText("-");
-        return UnibotCleanActivity.getInstance().translate(languageMap);
+        boolean bRes = UnibotCleanActivity.getInstance().translate(languageMap);
+        //only for work log
+        UnibotCleanActivity.getInstance().clickAuto7();
+        return bRes;
     }
 
     boolean translateUnibotSetting(){
         //will delete
-        //MainActivity.getInstance().clickDM80i();
+        MainActivity.getInstance().clickDM80i();
         //
         UnibotCleanActivity.getInstance().showActivity();
         UnibotCleanActivity.getInstance().clickSetting();
@@ -509,6 +512,20 @@ class HandleIntl {
         ContinueCleanActivity.getInstance().clickSwitch();
         ContinueCleanActivity.getInstance().clickBack();
         return bRes;
+    }
+
+    boolean translateSameContinueTime(){
+        SettingActivity.getInstance().clickContinuedClean();
+        ContinueCleanActivity.getInstance().clickSwitch();
+        ContinueCleanActivity.getInstance().showStartTime();
+        ContinueCleanActivity.getInstance().setTime();
+        ContinueCleanActivity.getInstance().clickBack();
+        Common.getInstance().waitForSecond(200);
+        boolean bResult = ContinueCleanActivity.getInstance().translateSameTime(languageMap);
+        ContinueCleanActivity.getInstance().clickSwitch();
+        //return to settings
+        ContinueCleanActivity.getInstance().clickBack();
+        return bResult;
     }
 
     boolean translateConsumable(){
@@ -594,30 +611,96 @@ class HandleIntl {
         return bResult;
     }
 
-    boolean translateAddTimeSchedule(){
+    private boolean translateAddTimeSchedule(int iDate){
         TimeScheduleActivity.getInstance().clickAddSchedule();
         //set sunday
         NewScheduleActivity.getInstance().clickRepeat();
-        RepetitionActivity.getInstance().clickSun();
+        RepetitionActivity.getInstance().clickWeekOfDate(iDate);
         RepetitionActivity.getInstance().clickWeekOfDate(Common.getInstance().getWeekIndex());
         RepetitionActivity.getInstance().clickBack();
         //set time
         NewScheduleActivity.getInstance().setStartTime();
         NewScheduleActivity.getInstance().clickConfirmAdd();
         TimeScheduleActivity.getInstance().showAddedActivity();
-        boolean bRes = TimeScheduleActivity.getInstance().translateAddNewSchedule(languageMap, false);
-        //TimeScheduleActivity.getInstance().delTime_swipe();
-        //TimeScheduleActivity.getInstance().showEmptyActivity();
+        boolean bRes = TimeScheduleActivity.getInstance().translateAddNewSchedule(languageMap, iDate);
+        TimeScheduleActivity.getInstance().delAllTasks();
+        TimeScheduleActivity.getInstance().showEmptyActivity();
         return bRes;
     }
 
-    boolean translateAddTimeScheduleNever(){
+    boolean translateAddTimeSchedule_sun(){
+        return translateAddTimeSchedule(0);
+    }
+
+    boolean translateAddTimeSchedule_mon(){
+        return translateAddTimeSchedule(1);
+    }
+
+    boolean translateAddTimeSchedule_tues(){
+        return translateAddTimeSchedule(2);
+    }
+
+    boolean translateAddTimeSchedule_wed(){
+        return translateAddTimeSchedule(3);
+    }
+
+    boolean translateAddTimeSchedule_thurs(){
+        return translateAddTimeSchedule(4);
+    }
+
+    boolean translateAddTimeSchedule_fri(){
+        return translateAddTimeSchedule(5);
+    }
+
+    boolean translateAddTimeSchedule_sat(){
+        return translateAddTimeSchedule(6);
+    }
+
+    boolean translateAddTimeSchedule_weekends(){
         TimeScheduleActivity.getInstance().clickAddSchedule();
-        //set time
         NewScheduleActivity.getInstance().setStartTime();
+        NewScheduleActivity.getInstance().clickRepeat();
+        RepetitionActivity.getInstance().clickWeekOfDate(0);
+        RepetitionActivity.getInstance().clickWeekOfDate(6);
+        RepetitionActivity.getInstance().clickWeekOfDate(Common.getInstance().getWeekIndex());
+        RepetitionActivity.getInstance().clickBack();
         NewScheduleActivity.getInstance().clickConfirmAdd();
+        boolean bRes = TimeScheduleActivity.getInstance().translateAddNewSchedule(languageMap, 7);
+        TimeScheduleActivity.getInstance().delAllTasks();
         TimeScheduleActivity.getInstance().showAddedActivity();
-        return TimeScheduleActivity.getInstance().translateAddNewSchedule(languageMap, true);
+        return bRes;
+    }
+
+    boolean translateAddTimeSchedule_workday(){
+        TimeScheduleActivity.getInstance().clickAddSchedule();
+        NewScheduleActivity.getInstance().setStartTime();
+        NewScheduleActivity.getInstance().clickRepeat();
+        for (int i = 1; i < 6; i++){
+            RepetitionActivity.getInstance().clickWeekOfDate(i);
+        }
+        RepetitionActivity.getInstance().clickWeekOfDate(Common.getInstance().getWeekIndex());
+        RepetitionActivity.getInstance().clickBack();
+        NewScheduleActivity.getInstance().clickConfirmAdd();
+        boolean bRes = TimeScheduleActivity.getInstance().translateAddNewSchedule(languageMap, 8);
+        TimeScheduleActivity.getInstance().delAllTasks();
+        TimeScheduleActivity.getInstance().showAddedActivity();
+        return bRes;
+    }
+
+    boolean translateAddTimeSchedule_everyday(){
+        TimeScheduleActivity.getInstance().clickAddSchedule();
+        NewScheduleActivity.getInstance().setStartTime();
+        NewScheduleActivity.getInstance().clickRepeat();
+        for (int i = 0; i < 7; i++){
+            RepetitionActivity.getInstance().clickWeekOfDate(i);
+        }
+        RepetitionActivity.getInstance().clickWeekOfDate(Common.getInstance().getWeekIndex());
+        RepetitionActivity.getInstance().clickBack();
+        NewScheduleActivity.getInstance().clickConfirmAdd();
+        return TimeScheduleActivity.getInstance().translateAddNewSchedule(languageMap, 9);
+        /*TimeScheduleActivity.getInstance().delAllTasks();
+        TimeScheduleActivity.getInstance().showAddedActivity();
+        return bRes;*/
     }
 
     boolean translateDelSchedule_Edit(){
@@ -633,6 +716,23 @@ class HandleIntl {
         TimeScheduleActivity.getInstance().clickDel();
         //TimeScheduleActivity.getInstance().clickBack();
         return bRes;
+    }
+
+    boolean translateAddTimeSchedule_repeat(){
+        logger.info("add time schedule 1!!!");
+        TimeScheduleActivity.getInstance().clickAddSchedule();
+        NewScheduleActivity.getInstance().setStartTimeNight();
+        NewScheduleActivity.getInstance().clickConfirmAdd();
+        TimeScheduleActivity.getInstance().showAddedActivity();
+        logger.info("add time schedule 2!!!");
+        TimeScheduleActivity.getInstance().clickAddSchedule();
+        NewScheduleActivity.getInstance().setStartTimeNight();
+        NewScheduleActivity.getInstance().clickConfirmAdd();
+        boolean bRepeat = NewScheduleActivity.getInstance().repeatTimeSchedule(languageMap);
+        NewScheduleActivity.getInstance().clickBack();
+        TimeScheduleActivity.getInstance().delAllTasks();
+        TimeScheduleActivity.getInstance().showAddedActivity();
+        return bRepeat;
     }
 
     boolean translateOverTimeSchedule(){
