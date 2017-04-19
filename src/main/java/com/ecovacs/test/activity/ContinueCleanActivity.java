@@ -8,6 +8,8 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,6 +18,7 @@ import java.util.Map;
  */
 public class ContinueCleanActivity {
     private static ContinueCleanActivity continueCleanActivity = null;
+    private IOSDriver driver = null;
 
     @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIANavigationBar[1]/UIAStaticText[1]")
     private MobileElement title = null;
@@ -31,6 +34,19 @@ public class ContinueCleanActivity {
     private MobileElement textViewStart = null;
     @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIAStaticText[1]")
     private MobileElement textViewEnd = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableGroup[2]/UIAPicker[1]/UIAPickerWheel[1]")
+    private MobileElement pickerH = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableGroup[2]/UIAPicker[1]/UIAPickerWheel[2]")
+    private MobileElement pickerM = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIAStaticText[2]")
+    private MobileElement textStartTime = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIAStaticText[2]")
+    private MobileElement textEndTime = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAAlert[1]/UIAScrollView[1]/UIAStaticText[2]")
+    private MobileElement promptContent = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAAlert[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAButton[1]")
+    private MobileElement promptSure = null;
+
 
     private ContinueCleanActivity(){
 
@@ -45,6 +61,7 @@ public class ContinueCleanActivity {
 
     public void init(IOSDriver driver){
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+        this.driver = driver;
     }
 
     public void showActivity(){
@@ -105,6 +122,44 @@ public class ContinueCleanActivity {
         }
         clickSwitch();
         return btextViewStart && btextViewEnd;
+    }
+
+    private List<String> getTime(MobileElement element){
+        String[] strings = element.getText().split(":");
+        List<String> list = new ArrayList<String>();
+        list.add(strings[0]);
+        list.add(strings[1]);
+        return list;
+    }
+
+    private void setTimeNight(MobileElement element){
+        element.click();
+        Common.getInstance().setStartTimeNight(driver, pickerH, pickerM, getTime(element), 8);
+        element.click();
+        Common.getInstance().waitForSecond(1000);
+    }
+
+    public void setTime(){
+        setTimeNight(textStartTime);
+        setTimeNight(textEndTime);
+    }
+
+    public boolean translateSameTime(Map<String, String> tranMap){
+        String strLanguage = tranMap.get("language");
+        boolean bContent = promptContent.getText().trim().equalsIgnoreCase(tranMap.get("random_deebot_no_disturb_error"));
+        if(!bContent) {
+            TranslateErrorReport.getInstance().insetNewLine(
+                    strLanguage, "ContinueClean", promptContent.getText(),
+                    tranMap.get("random_deebot_no_disturb_error"), "fail");
+        }
+        boolean bSure = promptSure.getText().trim().equalsIgnoreCase(tranMap.get("random_deebot_btn_known"));
+        if(!bSure){
+            TranslateErrorReport.getInstance().insetNewLine(
+                    strLanguage, "ContinueClean", promptSure.getText(),
+                    tranMap.get("random_deebot_btn_known"), "fail");
+        }
+        promptSure.click();
+        return bContent && bSure;
     }
 
     public boolean translate(Map<String, String> tranMap){

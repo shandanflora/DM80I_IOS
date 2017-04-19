@@ -1,6 +1,7 @@
 package com.ecovacs.test.activity;
 
 import com.ecovacs.test.common.Common;
+import com.ecovacs.test.common.PropertyData;
 import com.ecovacs.test.common.TranslateErrorReport;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
@@ -78,7 +79,7 @@ public class MainActivity {
             List<MobileElement> textList = rl.findElements(By.className("UIAStaticText"));
             for (MobileElement text:textList){
                 logger.info("child elment--" + text.getText());
-                if (text.getText().contains("DM80i")){
+                if (text.getText().contains(PropertyData.getProperty("DM80I"))){
                     text.click();
                     break;
                 }

@@ -1,20 +1,22 @@
 package com.ecovacs.test.common;
 
-import io.appium.java_client.AppiumDriver;
+//import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.*;
-import org.openqa.selenium.remote.Augmenter;
+//import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
+//import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
+//import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by ecosqa on 16/7/27.
@@ -24,14 +26,13 @@ public class Common {
     //parameter
     private static Logger logger = LoggerFactory.getLogger(Common.class);
     private static Common common = null;
-    private FailType failType = null;
-
 
     //
-    public enum FailType{
+    /*
+    private enum FailType{
         NOT_REGISTER, //user not register
         ALREADY_REGISTER //user had registered
-    }
+    }*/
 
     private Common(){
 
@@ -86,7 +87,7 @@ public class Common {
             }
         return true;
     }
-
+/*
     public boolean screenShot(String strFileName, WebDriver driver){
         TakesScreenshot screen = (TakesScreenshot ) new Augmenter().augment(driver);
         String strPath = getClass().getResource("/").getPath()
@@ -102,7 +103,7 @@ public class Common {
         }
         File ss = new File(strPath + strFileName);
         return screen.getScreenshotAs(OutputType.FILE).renameTo(ss);
-    }
+    }*/
 
     public void waitForSecond(int iMillSecond){
         try {
@@ -112,7 +113,7 @@ public class Common {
         }
     }
 
-    public void goBack(AppiumDriver driver, int iLoop){
+    /*public void goBack(AppiumDriver driver, int iLoop){
         for(int i = 0; i < iLoop; i++){
             driver.navigate().back();
             waitForSecond(300);
@@ -120,7 +121,7 @@ public class Common {
 
     }
 
-    /*private boolean deleteDir(File dir) {
+    private boolean deleteDir(File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
             if(children == null){
@@ -136,7 +137,7 @@ public class Common {
         }
         //delete empty folder or file
         return dir.delete();
-    }*/
+    }
 
     public String executeCommand(String command) {
 
@@ -161,7 +162,7 @@ public class Common {
             e.printStackTrace();
         }
         return output.toString();
-    }
+    }*/
 
     public boolean showActivity(WebElement element){
         boolean bResult = false;
@@ -186,14 +187,6 @@ public class Common {
         return bResult;
     }
 
-    public FailType getFailType(){
-        return failType;
-    }
-
-    public void setFailType(FailType type){
-        failType = type;
-    }
-
     /**
      *
      * @return 0-6
@@ -205,6 +198,49 @@ public class Common {
             iIndex = 0;
         }
         return iIndex;
+    }
+
+    /**
+     * set time 00:00
+     */
+
+    public void setStartTimeNight(IOSDriver driver, MobileElement pickerH, MobileElement pickerM, List<String> listTime, int iDire){
+        //get current time
+        int iHour = Integer.parseInt(listTime.get(0));
+        int iMin = Integer.parseInt(listTime.get(1));
+        System.out.println("current hour: " + iHour);
+        System.out.println("current minute: " + iMin);
+
+        Point pointH = pickerH.getLocation();
+        Dimension dimensionH = pickerH.getSize();
+        int iRectX_H = pointH.getX();
+        int iRectY_H = pointH.getY();
+        int iWidth_H = dimensionH.getWidth();
+        int iHeight_H = dimensionH.getHeight();
+
+        pointH.x = iRectX_H+ iWidth_H/2;
+        pointH.y = iRectY_H + iHeight_H/2;
+
+        Point pointM = pickerM.getLocation();
+        Dimension dimensionM = pickerM.getSize();
+        int iRectX_M = pointM.getX();
+        int iRectY_M = pointM.getY();
+        int iWidth_M = dimensionM.getWidth();
+        int iHeight_M = dimensionM.getHeight();
+
+        pointM.x = iRectX_M + iWidth_M/2;
+        pointM.y = iRectY_M + iHeight_M/2;
+        //set time 00:00
+        for(int i = 0; i < iHour; i++){
+            driver.swipe(pointH.x, pointH.y ,
+                    pointH.x, pointH.y + iHeight_H/iDire, 300);
+            Common.getInstance().waitForSecond(500);
+        }
+        for (int j = 0; j < iMin; j++){
+            driver.swipe(pointM.x, pointM.y ,
+                    pointM.x, pointM.y + iHeight_M/iDire, 300);
+            Common.getInstance().waitForSecond(500);
+        }
     }
 
 }

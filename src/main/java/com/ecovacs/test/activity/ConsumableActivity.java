@@ -32,6 +32,12 @@ public class ConsumableActivity {
     private MobileElement textViewNote = null;
     @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAButton[4]")
     private MobileElement btnReset = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAAlert[1]/UIAScrollView[1]/UIAStaticText[2]")
+    private MobileElement promptContent = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAAlert[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAButton[1]")
+    private MobileElement promptCancel = null;
+    @FindBy(xpath = "//UIAApplication[1]/UIAWindow[1]/UIAAlert[1]/UIACollectionView[1]/UIACollectionCell[2]/UIAButton[1]")
+    private MobileElement promptSure = null;
 
     private ConsumableActivity(){
 
@@ -101,7 +107,40 @@ public class ConsumableActivity {
                 bbtnReset;
     }
 
+    private boolean translateReset(Map<String, String> tranMap, MobileElement element, String strContent){
+        String strLanguage = tranMap.get("language");
+        element.click();
+        btnReset.click();
+        boolean bpromptContent = promptContent.getText().equalsIgnoreCase(strContent);
+        if (!bpromptContent){
+            TranslateErrorReport.getInstance().insetNewLine(
+                    strLanguage, "Consumable", promptContent.getText(),
+                    strContent, "fail");
+        }
+        boolean bpromptCancel = promptCancel.getText().equalsIgnoreCase(tranMap.get("random_deebot_cancel"));
+        if (!bpromptCancel){
+            TranslateErrorReport.getInstance().insetNewLine(
+                    strLanguage, "Consumable", promptCancel.getText(),
+                    tranMap.get("random_deebot_cancel"), "fail");
+        }
+        boolean bpromptSure = promptSure.getText().equalsIgnoreCase(tranMap.get("random_deebot_confirm"));
+        if (!bpromptSure){
+            TranslateErrorReport.getInstance().insetNewLine(
+                    strLanguage, "Consumable", promptContent.getText(),
+                    tranMap.get("random_deebot_confirm"), "fail");
+        }
+        promptCancel.click();
+        return bpromptContent && bpromptCancel && bpromptSure;
+    }
+
     public boolean translate(Map<String, String> tranMap){
-        return staticUI(tranMap);
+        boolean bStatic = staticUI(tranMap);
+        boolean bResetSide = translateReset(tranMap, btnSide,
+                tranMap.get("random_deebot_consumable_reset_hint_side_brush"));
+        boolean bResetMain = translateReset(tranMap, btnMain,
+                tranMap.get("random_deebot_consumable_reset_hint_main_brush"));
+        boolean bResetFilter = translateReset(tranMap, btnFilter,
+                tranMap.get("random_deebot_consumable_reset_hint_filter"));
+        return bStatic && bResetSide && bResetMain && bResetFilter;
     }
 }
