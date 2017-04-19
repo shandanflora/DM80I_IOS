@@ -199,16 +199,6 @@ public class TestIntlTranslate_Japanese {
     }
 
     @Test
-    public void translateAddTimeScheduleNever(){
-        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeScheduleNever());
-    }
-
-    @Test
-    public void translateAddTimeSchedule(){
-        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule());
-    }
-
-    @Test
     public void translateDelSchedule_Edit(){
         Assert.assertTrue(HandleIntl.getInstance().translateDelSchedule_Edit());
     }
