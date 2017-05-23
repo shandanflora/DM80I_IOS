@@ -235,9 +235,9 @@ class HandleIntl {
 
     void changeLanguage(String strLanguage){
         //return deebot clean
-        //SettingActivity.getInstance().clickBack();
+        SettingActivity.getInstance().clickBack();
         //return main
-        //mvUnibotCleanActivity.getInstance().clickBack();
+        UnibotCleanActivity.getInstance().clickBack();
         /*if(!login("Japan", PropertyData.getProperty("hotmail_email"), PropertyData.getProperty("login_pass"))){
             logger.error("login failed!!!");
             return;
@@ -259,17 +259,18 @@ class HandleIntl {
         TranslateErrorReport.getInstance().init(list);
     }
 
-    void translate_init(String strColName){
-        Map<String, String> tranMapCommon = TranslateIntl.getInstance().readExcel("Translate.xlsx", strColName);
+    void translate_init(String strColNameComm, String strColName){
+        Map<String, String> tranMapCommon = TranslateIntl.getInstance().readExcel("Translate.xlsx", strColNameComm);
         if(tranMapCommon.isEmpty()){
             logger.error("The language map is empty!!!");
             return;
         }
-        Map<String, String> tranMap = TranslateIntl.getInstance().readExcel("Random_translate.xlsx", strColName);
+        Map<String, String> tranMap = TranslateIntl.getInstance().readExcel("SLIM2.xlsx", strColName);
         if(tranMap.isEmpty()){
             logger.error("The language map is empty!!!");
             return;
         }
+        tranMap.put("language", strColName);
         tranMap.putAll(tranMapCommon);
         languageMap = tranMap;
     }
@@ -316,7 +317,7 @@ class HandleIntl {
     }
 
     boolean translateMain(){
-        //login("Japan", PropertyData.getProperty("hotmail_email"), PropertyData.getProperty("login_pass"));
+        login("Japan", PropertyData.getProperty("hotmail_email"), PropertyData.getProperty("login_pass"));
         //
         MainActivity.getInstance().showDeviceList();
         //
@@ -465,7 +466,7 @@ class HandleIntl {
     boolean translateUnibotClean(){
         MainActivity.getInstance().showDeviceList();
         Common.getInstance().waitForSecond(2000);
-        MainActivity.getInstance().clickDM80i();
+        MainActivity.getInstance().clickDM80i(PropertyData.getProperty("DM80I"));
         UnibotCleanActivity.getInstance().showActivity();
         UnibotCleanActivity.getInstance().showText("-");
         boolean bRes = UnibotCleanActivity.getInstance().translate(languageMap);
@@ -476,7 +477,7 @@ class HandleIntl {
 
     boolean translateUnibotSetting(){
         //will delete
-        MainActivity.getInstance().clickDM80i();
+        //MainActivity.getInstance().clickDM80i();
         //
         UnibotCleanActivity.getInstance().showActivity();
         UnibotCleanActivity.getInstance().clickSetting();
@@ -678,7 +679,10 @@ class HandleIntl {
         for (int i = 1; i < 6; i++){
             RepetitionActivity.getInstance().clickWeekOfDate(i);
         }
-        RepetitionActivity.getInstance().clickWeekOfDate(Common.getInstance().getWeekIndex());
+        int iIndex = Common.getInstance().getWeekIndex();
+        if (iIndex != 1){
+            RepetitionActivity.getInstance().clickWeekOfDate(iIndex);
+        }
         RepetitionActivity.getInstance().clickBack();
         NewScheduleActivity.getInstance().clickConfirmAdd();
         boolean bRes = TimeScheduleActivity.getInstance().translateAddNewSchedule(languageMap, 8);
