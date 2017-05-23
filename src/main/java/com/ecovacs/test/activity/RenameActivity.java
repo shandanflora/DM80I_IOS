@@ -57,19 +57,19 @@ public class RenameActivity {
                     strLanguage, "Rename", title.getText(),
                     tranMap.get("random_deebot_rename"), "fail");
         }
-        boolean bbtnSave = btnSave.getText().equalsIgnoreCase(tranMap.get("random_deebot_save"));
+        /*boolean bbtnSave = btnSave.getText().equalsIgnoreCase(tranMap.get("random_deebot_save"));
         if (!bbtnSave){
             TranslateErrorReport.getInstance().insetNewLine(
                     strLanguage, "Rename", btnSave.getText(),
                     tranMap.get("random_deebot_save"), "fail");
-        }
+        }*/
         boolean btextViewMessage = textViewMessage.getText().equalsIgnoreCase(tranMap.get("random_deebot_hint_modify_nickname"));
         if (!btextViewMessage){
             TranslateErrorReport.getInstance().insetNewLine(
                     strLanguage, "Rename", textViewMessage.getText(),
                     tranMap.get("random_deebot_hint_modify_nickname"), "fail");
         }
-        return btitle && bbtnSave && btextViewMessage;
+        return btitle /*&& bbtnSave*/ && btextViewMessage;
     }
 
     public boolean translate(Map<String, String> tranMap){
