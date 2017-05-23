@@ -109,7 +109,7 @@ public class TimeScheduleActivity {
                 "random_deebot_never"};
         String strLanguage = tranMap.get("language");
         Common.getInstance().showActivity(textDate);
-        boolean btextDate = textDate.getText().trim().equalsIgnoreCase(weekDays[iIndex]);
+        boolean btextDate = textDate.getText().trim().equalsIgnoreCase(tranMap.get(weekDays[iIndex]));
         if (!btextDate){
             TranslateErrorReport.getInstance().insetNewLine(
                     strLanguage, "TimeSchedule", textDate.getText().trim(),
