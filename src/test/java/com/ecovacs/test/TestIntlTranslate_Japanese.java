@@ -23,13 +23,13 @@ public class TestIntlTranslate_Japanese {
             return;
         }
         HandleIntl.getInstance().init(driver);
-        HandleIntl.getInstance().translate_init("Japanese");
+        HandleIntl.getInstance().translate_init("Japanese", "Japanese");
         //HandleIntl.getInstance().translateErrorReport_init();
     }
 
     @AfterClass
     public void tearDown(){
-        HandleIntl.getInstance().changeLanguage(PropertyData.getProperty("es-LA"));
+        HandleIntl.getInstance().changeLanguage(PropertyData.getProperty("TW_ZH"));
         driver.quit();
     }
 

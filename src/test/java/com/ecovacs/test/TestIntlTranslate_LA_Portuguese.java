@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
  * Created by ecosqa on 17/2/7.
  * test translate of intl app
  */
-public class TestIntlTranslate_es_LA {
+public class TestIntlTranslate_LA_Portuguese {
     private IOSDriver driver = null;
 
     @BeforeClass
@@ -23,13 +23,13 @@ public class TestIntlTranslate_es_LA {
             return;
         }
         HandleIntl.getInstance().init(driver);
-        HandleIntl.getInstance().translate_init("es-LA");
+        HandleIntl.getInstance().translate_init("pt-BR", "LA-Portuguese");
         //HandleIntl.getInstance().translateErrorReport_init();
     }
 
     @AfterClass
     public void tearDown(){
-        HandleIntl.getInstance().changeLanguage(PropertyData.getProperty("fr-CA"));
+        HandleIntl.getInstance().changeLanguage(PropertyData.getProperty("Hebrew"));
         driver.quit();
     }
 
@@ -149,6 +149,11 @@ public class TestIntlTranslate_es_LA {
     }
 
     @Test
+    public void translateContinueClean_SameTime(){
+        Assert.assertTrue(HandleIntl.getInstance().translateSameContinueTime());
+    }
+
+    @Test
     public void translateNoTimeSchedule(){
         Assert.assertTrue(HandleIntl.getInstance().translateNoTimeSchedule());
     }
@@ -184,6 +189,56 @@ public class TestIntlTranslate_es_LA {
     }
 
     @Test
+    public void translateAddTimeSchedule_sun(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_sun());
+    }
+
+    @Test
+    public void translateAddTimeSchedule_mon(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_mon());
+    }
+
+    @Test
+    public void translateAddTimeSchedule_tues(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_tues());
+    }
+
+    @Test
+    public void translateAddTimeSchedule_wed(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_wed());
+    }
+
+    @Test
+    public void translateAddTimeSchedule_thurs(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_thurs());
+    }
+
+    @Test
+    public void translateAddTimeSchedule_fri(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_fri());
+    }
+
+    @Test
+    public void translateAddTimeSchedule_sat(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_sat());
+    }
+
+    @Test
+    public void translateAddTimeSchedule_weekends(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_weekends());
+    }
+
+    @Test
+    public void translateAddTimeSchedule_workday(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_workday());
+    }
+
+    @Test
+    public void translateAddTimeSchedule_everyday(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_everyday());
+    }
+
+    @Test
     public void translateConsumable(){
         Assert.assertTrue(HandleIntl.getInstance().translateConsumable());
     }
@@ -196,6 +251,11 @@ public class TestIntlTranslate_es_LA {
     @Test
     public void translateFirmwareVer(){
         Assert.assertTrue(HandleIntl.getInstance().translateFirmVer());
+    }
+
+    @Test
+    public void translateAddTimeSchedule_repeat(){
+        Assert.assertTrue(HandleIntl.getInstance().translateAddTimeSchedule_repeat());
     }
 
     @Test
