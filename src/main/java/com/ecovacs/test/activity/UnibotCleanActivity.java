@@ -260,7 +260,7 @@ public class UnibotCleanActivity {
         for (int i = 0; i < 7; i++){
             //auto
             btnAuto.click();
-            Common.getInstance().waitForSecond(1000);
+            Common.getInstance().waitForSecond(3000);
             //standby
             btnAuto.click();
             logger.info("i--" + i);

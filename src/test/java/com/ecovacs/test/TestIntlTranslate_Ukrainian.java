@@ -24,7 +24,7 @@ public class TestIntlTranslate_Ukrainian {
         }
         HandleIntl.getInstance().init(driver);
         HandleIntl.getInstance().translate_init("Ukrainian", "Ukrainian");
-        //HandleIntl.getInstance().translateErrorReport_init();
+        HandleIntl.getInstance().translateErrorReport_init();
     }
 
     @AfterClass

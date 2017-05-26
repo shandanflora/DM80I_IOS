@@ -24,7 +24,7 @@ public class TestIntlTranslate_Thai {
         }
         HandleIntl.getInstance().init(driver);
         HandleIntl.getInstance().translate_init("th-TH", "Thai");
-        //HandleIntl.getInstance().translateErrorReport_init();
+        HandleIntl.getInstance().translateErrorReport_init();
     }
 
     @AfterClass

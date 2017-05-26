@@ -171,7 +171,7 @@
                         <suiteXmlFile>res\testng_Spanish.xml</suiteXmlFile>
                         <suiteXmlFile>res\testng_French.xml</suiteXmlFile>
                         <suiteXmlFile>res\testng_Portuguese.xml</suiteXmlFile>
-                        <suiteXmlFile>res\testng_Italian.xml</suiteXmlFile>-->
+                        <suiteXmlFile>res\testng_Italian.xml</suiteXmlFile>
                         <suiteXmlFile>res\testng_ES_LA.xml</suiteXmlFile>
                         <suiteXmlFile>res\testng_FR_CA.xml</suiteXmlFile>
                         <suiteXmlFile>res\testng_Japanese.xml</suiteXmlFile>
@@ -181,7 +181,7 @@
                         <suiteXmlFile>res\testng_Korean.xml</suiteXmlFile>
                         <suiteXmlFile>res\testng_Thai.xml</suiteXmlFile>
                         <suiteXmlFile>res\testng_LA_Portuguese.xml</suiteXmlFile>
-                        <suiteXmlFile>res\testng_Hebrew.xml</suiteXmlFile>
+                        <suiteXmlFile>res\testng_Hebrew.xml</suiteXmlFile>-->
                         <suiteXmlFile>res\testng_Ukrainian.xml</suiteXmlFile>
                     </suiteXmlFiles>
                     <properties>
